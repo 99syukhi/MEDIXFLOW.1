@@ -1,0 +1,266 @@
+body {
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: 1fr 450px;
+    min-height: 100vh;
+    font-family: system-ui, -apple-system, sans-serif;
+    overflow-x: hidden;
+    background-color: #fcfdfc;
+}
+
+#login-section, #register-section {
+    grid-column: 1 / 2;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 2rem;
+    transition: opacity 0.3s ease-in-out;
+}
+
+#register-section {
+    display: none;
+}
+
+.form-wrapper {
+    width: 100%;
+    max-width: 450px;
+    text-align: center;
+}
+
+.form-box {
+    width: 100%;
+    background: white;
+    padding: 2rem;
+    border-radius: 1.5rem;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+    margin-top: 1rem;
+}
+
+.logo {
+    position: absolute;
+    top: 0.5rem;
+    left: 2rem;
+}
+
+.logo img {
+    height: 10rem;
+    width: auto;
+}
+
+h1 {
+    font-size: 2.2rem;
+    margin-bottom: 0.5rem;
+    font-weight: 700;
+    color: #3A5B22; /* Medixflow Groen */
+}
+
+.subtitle {
+    font-size: 1rem;
+    color: #666;
+    margin-bottom: 2rem;
+}
+
+h3 {
+    font-size: 0.9rem;
+    text-align: left;
+    color: #444;
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+}
+
+input, select.medix-select {
+    width: 100%;
+    padding: 0.9rem;
+    margin-bottom: 1.2rem;
+    border: 1px solid #e2e8f0;
+    border-radius: 0.8rem;
+    font-size: 1rem;
+    box-sizing: border-box;
+    outline: none;
+    transition: all 0.3s;
+}
+
+input:focus, select.medix-select:focus {
+    border-color: #3A5B22;
+    box-shadow: 0 0 0 3px rgba(58, 91, 34, 0.1);
+}
+
+select.medix-select {
+    appearance: none;
+    background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%233A5B22' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 1rem center;
+    background-size: 1.1rem;
+    cursor: pointer;
+}
+
+.role-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+    width: 100%;
+    margin-top: 1rem;
+}
+
+.role-btn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    min-height: 200px;
+    padding: 2.5rem 1rem;
+    background: white;
+    border: 2px solid #E8F0E4;
+    border-radius: 1.5rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #3A5B22;
+}
+
+.role-btn:hover {
+    border-color: #3A5B22;
+    background-color: #f9fbf8;
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(58, 91, 34, 0.1);
+}
+
+.role-btn .icon {
+    font-size: 2.5rem;
+    margin-bottom: 0.8rem;
+}
+
+.wachtwoord-wrapper {
+    position: relative;
+    width: 100%;
+}
+
+.wachtwoord-wrapper input {
+    padding-right: 3.5rem;
+}
+
+.eye-icon {
+    position: absolute;
+    right: 1rem;
+    top: 38%; 
+    transform: translateY(-50%);
+    cursor: pointer;
+    color: #888;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 5px;
+}
+
+.eye-icon:hover {
+    color: #3A5B22;
+}
+
+.inloggen, .registreren, .annuleren {
+    width: 100%;
+    padding: 1rem;
+    border-radius: 0.8rem;
+    font-size: 1.1rem;
+    font-weight: 600;
+    cursor: pointer;
+    border: none;
+    transition: all 0.3s ease;
+    margin-top: 0.5rem;
+}
+
+.inloggen {
+    background-color: #3A5B22;
+    color: white;
+}
+
+.inloggen:hover {
+    background-color: #2D461A;
+    box-shadow: 0 4px 12px rgba(58, 91, 34, 0.3);
+}
+
+.registreren {
+    background-color: #3A5B22;
+    color: white;
+}
+
+.registreren:hover {
+    background-color: #2D461A;
+    box-shadow: 0 4px 12px rgba(58, 91, 34, 0.3);
+}
+
+.annuleren {
+    background-color: rgba(168, 184, 156, 0.5); 
+    color: white;
+    border: 1px solid lightgray;
+}
+
+.annuleren:hover {
+    background-color: rgba(168, 184, 156, 0.8);
+}
+
+.foto-container {
+    grid-column: 2 / 3;
+    width: 100%;
+    background-color: #E8F0E4;
+    display: flex;
+    justify-content: center;
+    align-items: center; 
+    height: 100%;
+    position: relative;
+    top: 0;
+    margin: 0;
+}
+
+.foto-card {
+    width: 95%; 
+    height: 65vh;
+    background: white;
+    padding: 0.5rem;
+    box-sizing: border-box;
+    border-radius: 2.5rem;
+    border: 3px solid #3A5B22;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+    display: flex;
+    position: absolute;
+    left: -15%;
+}
+
+.foto-card img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 1.8rem;
+}
+
+@media (max-width: 1100px) {
+    body {
+        grid-template-columns: 1fr;
+    }
+    
+    .foto-container {
+        display: none;
+    }
+
+    .formulier-container {
+        padding: 4rem 1rem;
+    }
+}
+
+@media (max-width: 500px) {
+    .role-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .logo {
+        position: relative;
+        left: 0;
+        text-align: center;
+    }
+
+    h1 {
+        font-size: 1.8rem;
+    }
+}

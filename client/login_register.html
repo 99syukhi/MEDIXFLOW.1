@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="nl">
+
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Inloggen & Registreren | Medixflow</title>
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/login_register.css">
+    <link rel="icon" href="img/logo1.PNG" type="image/png">
+  </head>
+
+  <body>
+
+  <section class="formulier-container" id="login-section">
+  <header class="logo">
+    <a href="/"><img src="svg/logo.svg" alt="Medixflow Logo"></a>
+  </header>
+  
+  <div class="container">
+            <div class="form-wrapper">
+                <h1>Welkom Terug!</h1>
+                <p class="subtitle" id="form-subtitle">Selecteer uw rol om verder te gaan</p>
+
+                <div id="role-selection" class="role-grid">
+                    <button type="button" class="role-btn" onclick="showLoginForm('patient')">
+                        <span class="icon">👤</span> Patiënt
+                    </button>
+                    <button type="button" class="role-btn" onclick="showLoginForm('admin')">
+                        <span class="icon">🏥</span> Administratie
+                    </button>
+                </div>
+
+                <div class="form-box" id="patient-form" style="display: none;">
+                    <form action="/login-patient" method="POST">
+                        <h3>E-mail</h3>
+                        <input type="email" name="e-mail" placeholder="Voer uw e-mail in" required>
+                        
+                        <h3>Wachtwoord</h3>
+                        <div class="wachtwoord-wrapper">
+                            <input type="password" id="wachtwoord-pat" name="wachtwoord" placeholder="Voer uw wachtwoord in" required>
+                            <div class="eye-icon" onclick="togglePasswordVisibility('wachtwoord-pat')">
+                                <svg class="lucide-eye-off" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.733 5.076a10.744 10.744 0 0 1 11.205 6.575 1 1 0 0 1 0 .696 10.747 10.747 0 0 1-1.444 2.49"/><path d="M14.084 14.158a3 3 0 0 1-4.242-4.242"/><path d="M17.479 17.499a10.75 10.75 0 0 1-15.417-5.151 1 1 0 0 1 0-.696 10.75 10.75 0 0 1 4.446-5.143"/><path d="m2 2 20 20"/></svg>
+                                <svg class="lucide-eye" style="display: none;" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0"/><circle cx="12" cy="12" r="3"/></svg>
+                            </div>
+                        </div>
+                        
+                        <button class="inloggen" type="submit">Inloggen als Patiënt</button>
+                        <button class="annuleren" type="button" onclick="resetLogin()">Annuleren</button>
+                        <p>Heeft u nog geen account? <a href="#" onclick="showForm('register')">Registreer</a></p>
+                    </form>
+                </div>
+
+                <div class="form-box" id="admin-form" style="display: none;">
+                    <form action="/login-admin" method="POST">
+                        <h3>Afdeling</h3>
+                        <select name="afdeling" class="medix-select" required>
+                            <option value="" disabled selected>Selecteer uw afdeling</option>
+                            <option value="Kaakchirurgie">Kaakchirurgie</option>
+                            <option value="Kindergeneeskunde">Kindergeneeskunde</option>
+                            <option value="Gynaecologie">Gynaecologie</option>
+                            <option value="Radiologie">Radiologie & Beeldvorming</option>
+                            <option value="InterneGK">Interne Geneeskunde</option>
+                            <option value="Cardiologie">Cardiologie</option>
+                            <option value="Neurologie">Neurologie</option>
+                            <option value="Orthopedie">Orthopedie</option>
+                        </select>
+
+                        <h3>E-mail</h3>
+                        <input type="email" name="e-mail" placeholder="Naam@medixflow.sr" required>
+                        
+                        <h3>Wachtwoord</h3>
+                        <div class="wachtwoord-wrapper">
+                            <input type="password" id="wachtwoord-admin" name="wachtwoord" placeholder="Voer uw wachtwoord in" required>
+                            <div class="eye-icon" onclick="togglePasswordVisibility('wachtwoord-admin')">
+                                <svg class="lucide-eye-off" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.733 5.076a10.744 10.744 0 0 1 11.205 6.575 1 1 0 0 1 0 .696 10.747 10.747 0 0 1-1.444 2.49"/><path d="M14.084 14.158a3 3 0 0 1-4.242-4.242"/><path d="M17.479 17.499a10.75 10.75 0 0 1-15.417-5.151 1 1 0 0 1 0-.696 10.75 10.75 0 0 1 4.446-5.143"/><path d="m2 2 20 20"/></svg>
+                                <svg class="lucide-eye" style="display: none;" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0"/><circle cx="12" cy="12" r="3"/></svg>
+                            </div>
+                        </div>
+
+                        <button class="inloggen" type="submit">Inloggen Systeem</button>
+                        <button class="annuleren" type="button" onclick="resetLogin()">Annuleren</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="formulier-container" id="register-section">
+        <header class="logo">
+            <a href="/"><img src="/client/svg/logo no bg.svg" alt="Medixflow Logo"></a>
+        </header>
+        
+        <div class="container">
+            <div class="form-wrapper">
+                <h1>Welkom Bij Medixflow!</h1>
+                <p class="subtitle">Registreer nu om uw afspraak te boeken</p>
+                <div class="form-box">
+                    <form action="/register" method="POST">
+                        <h3>Voornaam</h3>
+                        <input type="text" name="name" placeholder="Voer uw voornaam in" required>
+
+                        <h3>Achternaam</h3>
+                        <input type="text" name="surname" placeholder="Voer uw achternaam in" required>
+
+                        <h3>ID-nummer</h3>
+                        <input type="text" name="ID-nummer" placeholder="Voer uw ID-nummer in" required>
+
+                        <h3>E-mail</h3>
+                        <input type="email" name="e-mail" placeholder="Voer uw e-mail in" required>
+
+                        <h3>Wachtwoord</h3>
+                        <div class="wachtwoord-wrapper">
+                            <input type="password" id="wachtwoord-reg" name="wachtwoord" placeholder="Minimaal 8 tekens" required>
+                            <div class="eye-icon" onclick="togglePasswordVisibility('wachtwoord-reg')">
+                                <svg class="lucide-eye-off" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.733 5.076a10.744 10.744 0 0 1 11.205 6.575 1 1 0 0 1 0 .696 10.747 10.747 0 0 1-1.444 2.49"/><path d="M14.084 14.158a3 3 0 0 1-4.242-4.242"/><path d="M17.479 17.499a10.75 10.75 0 0 1-15.417-5.151 1 1 0 0 1 0-.696 10.75 10.75 0 0 1 4.446-5.143"/><path d="m2 2 20 20"/></svg>
+                                <svg class="lucide-eye" style="display: none;" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0"/><circle cx="12" cy="12" r="3"/></svg>
+                            </div>
+                        </div>
+
+                        <h3>Bevestig Wachtwoord</h3>
+                        <div class="wachtwoord-wrapper">
+                            <input type="password" id="wachtwoord-conf" name="wachtwoord_confirm" placeholder="Herhaal uw wachtwoord" required>
+                            <div class="eye-icon" onclick="togglePasswordVisibility('wachtwoord-conf')">
+                                <svg class="lucide-eye-off" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.733 5.076a10.744 10.744 0 0 1 11.205 6.575 1 1 0 0 1 0 .696 10.747 10.747 0 0 1-1.444 2.49"/><path d="M14.084 14.158a3 3 0 0 1-4.242-4.242"/><path d="M17.479 17.499a10.75 10.75 0 0 1-15.417-5.151 1 1 0 0 1 0-.696 10.75 10.75 0 0 1 4.446-5.143"/><path d="m2 2 20 20"/></svg>
+                                <svg class="lucide-eye" style="display: none;" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0"/><circle cx="12" cy="12" r="3"/></svg>
+                            </div>
+                        </div>
+
+                        <button class="registreren" type="submit">Registreren</button>
+                        <button class="annuleren" type="button" onclick="showForm('login')">Annuleren</button>
+                        <p>Heeft al een account? <a href="#" onclick="showForm('login')">Log in</a></p>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="foto-container">
+        <div class="foto-card">
+            <img src="img/login-register.jpg" alt="Medixflow Visual">
+        </div>
+    </section>
+
+    <script src="js/login_register.js"></script>
+</body>
+</html>
