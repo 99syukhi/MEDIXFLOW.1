@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Beschikbare Tijden | Medixflow</title>
+  <link rel="stylesheet" href="css/beschikbare-tijden.css" />
+  <link rel="icon" href="img/logo1.PNG" type="image/png">
+</head>
+<body class="bt-page">
+
+  <header class="header">
+        <div class="logo-section">
+            <img src="img/medixflow-logo.png" alt="MedixFlow Logo" class="logo">
+        </div>
+
+        <div class="user-section">
+            <div class="user-icon-wrapper">
+                <svg xmlns="http://www.w3.org/2000/svg" 
+                     width="24" 
+                     height="24" 
+                     viewBox="0 0 24 24" 
+                     fill="none" 
+                     stroke="currentColor" 
+                     stroke-width="2" 
+                     stroke-linecap="round" 
+                     stroke-linejoin="round" 
+                     class="user-icon">
+                    <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path>
+                    <circle cx="12" cy="7" r="4"></circle>
+                </svg>
+            </div>
+            <button class="logout-btn">Uitloggen</button>
+        </div>
+  </header>
+
+  <main class="bt-main">
+
+    <section class="bt-title">
+      <h2>Beschikbare Tijden</h2>
+      <p>Bekijk de vrije tijden van artsen</p>
+    </section>
+
+    <section class="bt-layout">
+
+      <div class="bt-left">
+        <div class="bt-filter">
+
+          <div class="bt-row">
+            <div class="bt-label">Kies een arts</div>
+
+            <div class="bt-input-wrap bt-select-wrap">
+              <select id="doctorSelect" required>
+                <option value="" disabled selected hidden>Kies een arts</option>
+                <option value="alexander">Drs. F. Alexander</option>
+                <option value="velazquez">Drs. R. Velazquez</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="bt-row">
+            <div class="bt-label">Kies een datum</div>
+            <div class="bt-input-wrap">
+              <input id="dateSelect" class="bt-input" type="date" />
+            </div>
+          </div>
+
+          <button id="viewBtn" class="bt-btn" type="button" disabled>Bekijk tijden</button>
+        </div>
+
+        <a class="bt-back" href="patiëntportaal.html">Terug naar patiëntportaal</a>
+      </div>
+
+      <div class="bt-right">
+        <div class="bt-card">
+          <div class="bt-card-top">
+            <div class="bt-avatar">
+              <svg xmlns="http://www.w3.org/2000/svg" 
+                   width="44" 
+                   height="44" 
+                   viewBox="0 0 24 24" 
+                   fill="none" 
+                   stroke="currentColor" 
+                   stroke-width="1.5" 
+                   stroke-linecap="round" 
+                   stroke-linejoin="round" 
+                   class="doctor-icon">
+                   <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path>
+                   <circle cx="12" cy="7" r="4"></circle>
+                   <path d="m14 11-1 2-2-2"></path>
+              </svg>
+            </div>
+            <div class="bt-docmeta">
+              <div id="docName" class="bt-docname">----</div>
+              <div id="docDept" class="bt-docsub">----</div>
+            </div>
+          </div>
+
+          <h3 class="bt-card-title">Beschikbare tijden</h3>
+
+          <div class="bt-times-scroll" id="timesScroll">
+            <div class="bt-times-grid" id="timesGrid"></div>
+          </div>
+
+        </div>
+      </div>
+
+    </section>
+
+  </main>
+
+  <script src="js/beschikbare-tijden.js"></script>
+</body>
+</html>
