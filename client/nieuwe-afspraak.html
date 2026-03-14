@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Nieuwe Afspraak | Medixflow</title>
+  <link rel="stylesheet" href="css/nieuwe-afspraak.css">
+  <link rel="icon" href="img/logo1.PNG" type="image/png">
+</head>
+<body>
+
+    <header class="header">
+        <div class="logo-section">
+            <img src="img/medixflow-logo.png" alt="MedixFlow Logo" class="logo">
+        </div>
+
+        <div class="user-section">
+            <div class="user-icon-wrapper">
+                <svg xmlns="http://www.w3.org/2000/svg" 
+                     width="24" 
+                     height="24" 
+                     viewBox="0 0 24 24" 
+                     fill="none" 
+                     stroke="currentColor" 
+                     stroke-width="2" 
+                     stroke-linecap="round" 
+                     stroke-linejoin="round" 
+                     class="user-icon">
+                    <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path>
+                    <circle cx="12" cy="7" r="4"></circle>
+                </svg>
+            </div>
+            <button class="logout-btn">Uitloggen</button>
+        </div>
+    </header>
+
+  <main class="main-content">
+    <section class="page-title">
+      <h2>Nieuwe Afspraak</h2>
+      <p>Volg het stappenplan om eenvoudig een afspraak te maken met een arts.</p>
+    </section>
+
+    <section class="stepper" aria-label="Stappenplan">
+      <div class="step is-active" data-step="1">
+        <span class="dot">1</span>
+        <span class="label">Kies afdeling</span>
+      </div>
+      <div class="line" aria-hidden="true"></div>
+      <div class="step" data-step="2">
+        <span class="dot">2</span>
+        <span class="label">Kies arts</span>
+      </div>
+      <div class="line" aria-hidden="true"></div>
+      <div class="step" data-step="3">
+        <span class="dot">3</span>
+        <span class="label">Kies een datum, tijd en bevestig</span>
+      </div>
+    </section>
+
+    <section class="panel-wrap">
+      <section class="step-panel is-active" data-step="1">
+        <h3 class="step-title">1. Kies een afdeling</h3>
+          <div class="hscroll" id="deptScroll">
+            <article class="pick-card is-enabled" data-dept="kaakchirurgie">
+              <div class="avatar">
+                <img src="img/afspraak-kaakchirurg.jpg" alt="Kaakchirurgie">
+              </div>
+              <h4>Kaakchirurgie</h4>
+              <button class="btn btn-primary js-pick-dept">Kiezen</button>
+            </article>
+
+            <article class="pick-card" data-dept="Cardiologie">
+              <div class="avatar">
+                <img src="img/afspraak-cardiologie.jpg" alt="Cardiologie">
+              </div>
+              <h4>Cardiologie</h4>
+              <button class="btn btn-muted" disabled>Kiezen</button>
+            </article>
+
+            <article class="pick-card" data-dept="Neurologie">
+              <div class="avatar">
+                <img src="img/afspraak-neurologie.jpg" alt="Neurologie">
+              </div>
+              <h4>Neurologie</h4>
+              <button class="btn btn-muted" disabled>Kiezen</button>
+            </article>
+
+    <article class="pick-card" data-dept="Gynaecologie">
+      <div class="avatar">
+        <img src="img/afspraak-gynaecologie.jpg" alt="Gynaecologie">
+      </div>
+      <h4>Gynaecologie</h4>
+      <button class="btn btn-muted" disabled>Kiezen</button>
+    </article>
+
+    <article class="pick-card" data-dept="Kindergeneeskunde">
+      <div class="avatar">
+        <img src="img/afspraak-kg.png" alt="Kindergeneeskunde">
+      </div>
+      <h4>Kindergeneeskunde</h4>
+      <button class="btn btn-muted" disabled>Kiezen</button>
+    </article>
+
+    <article class="pick-card" data-dept="Radiologie & Beeldvorming">
+      <div class="avatar">
+        <img src="img/afspraak-radiologie.jpg" alt="Radiologie & Beeldvorming">
+      </div>
+      <h4>Radiologie & Beeldvorming</h4>
+      <button class="btn btn-muted" disabled>Kiezen</button>
+    </article>
+
+    <article class="pick-card" data-dept="Interne Geneeskunde">
+      <div class="avatar">
+        <img src="img/afspraak-ig.jpg" alt="Interne Geneeskunde">
+      </div>
+      <h4>Interne Geneeskunde</h4>
+      <button class="btn btn-muted" disabled>Kiezen</button>
+    </article>
+
+    <article class="pick-card" data-dept="Orthopedie">
+      <div class="avatar">
+        <img src="img/afspraak-orthopedie.png" alt="Orthopedie">
+      </div>
+      <h4>Orthopedie</h4>
+      <button class="btn btn-muted" disabled>Kiezen</button>
+    </article>
+  </div>
+
+  <div class="bottom-bar">
+    <a class="back-btn js-nav" href="patiëntportaal.html">Terug naar patiëntportaal</a>
+  </div>
+</section>
+
+      <section class="step-panel" data-panel="2">
+        <h3 class="step-title">2. Kies een arts</h3>
+
+        <div class="grid2">
+          <article class="pick-card is-enabled" data-doctor="alexander">
+            <div class="avatar">
+              <svg xmlns="http://www.w3.org/2000/svg" 
+                   width="44" 
+                   height="44" 
+                   viewBox="0 0 24 24" 
+                   fill="none" 
+                   stroke="currentColor" 
+                   stroke-width="1.5" 
+                   stroke-linecap="round" 
+                   stroke-linejoin="round" 
+                   class="doctor-icon">
+                   <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path>
+                   <circle cx="12" cy="7" r="4"></circle>
+                   <path d="m14 11-1 2-2-2"></path>
+              </svg>
+            </div>
+              <h4>Drs. F. Alexander</h4>
+              <p>Kaakchirurg</p>
+              <button class="btn btn-primary js-pick-doctor">Kiezen</button>
+          </article>
+
+          <article class="pick-card is-enabled" data-doctor="alexander">
+            <div class="avatar">
+              <svg xmlns="http://www.w3.org/2000/svg" 
+                   width="44" 
+                   height="44" 
+                   viewBox="0 0 24 24" 
+                   fill="none" 
+                   stroke="currentColor" 
+                   stroke-width="1.5" 
+                   stroke-linecap="round" 
+                   stroke-linejoin="round" 
+                   class="doctor-icon">
+                   <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path>
+                   <circle cx="12" cy="7" r="4"></circle>
+                   <path d="m14 11-1 2-2-2"></path>
+              </svg>
+            </div>
+              <h4>Drs. R. Velazquez</h4>
+              <p>Kaakchirurg</p>
+              <button class="btn btn-primary js-pick-doctor">Kiezen</button>
+          </article>
+        </div>
+
+        <button class="btn btn-ghost js-back">Ga terug</button>
+      </section>
+
+      <section class="panel" data-panel="3">
+        <h3>3. Kies een datum en een tijd</h3>
+
+        <div class="form-row">
+          <div class="field">
+            <label for="apptDate">Datum</label>
+            <div class="input-wrap">
+              <input id="apptDate" type="date" />
+            </div>
+          </div>
+
+          <div class="field">
+            <label for="apptTime">Tijd</label>
+            <div class="input-wrap">
+              <input id="apptTime" type="time" />
+            </div>
+          </div>
+        </div>
+
+        <div class="actions">
+          <button class="primary" type="button" data-action="confirm">Afspraak bevestigen</button>
+          <button class="secondary" type="button" data-action="cancel">Annuleren</button>
+        </div>
+
+        <div class="bottom-bar">
+          <button class="back-btn" type="button" data-action="back-to-2">Ga terug</button>
+        </div>
+      </section>
+
+      <section class="step-panel" data-step="4">
+        <div class="confirm-card">
+          <h2>Afspraak Bevestigd</h2>
+          <div class="confirm-icon">✓</div>
+          <p>Uw afspraak is succesvol ingepland.</p>
+
+        <div class="confirm-actions">
+          <a class="btn btn-primary js-go-appointments" href="mijn-afspraken.html">Mijn afspraken</a>
+          <a class="btn btn-primary js-go-portal" href="patiëntportaal.html">Terug naar patiëntportaal</a>
+        </div>
+    </div>
+  </section>
+
+    </section>
+  </main>
+
+  <script src="js/nieuwe-afspraak.js"></script>
+</body>
+</html>
