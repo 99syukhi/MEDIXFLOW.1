@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Patiëntportaal | Medixflow</title>
+    <link rel="stylesheet" href="css/patiëntportaal.css">
+    <link rel="icon" href="img/logo1.PNG" type="image/png">
+</head>
+<body>
+
+    <header class="header">
+        <div class="logo-section">
+            <img src="img/medixflow-logo.png" alt="MedixFlow Logo" class="logo">
+        </div>
+
+        <div class="user-section">
+            <div class="user-icon-wrapper">
+                <svg xmlns="http://www.w3.org/2000/svg" 
+                     width="24" 
+                     height="24" 
+                     viewBox="0 0 24 24" 
+                     fill="none" 
+                     stroke="currentColor" 
+                     stroke-width="2" 
+                     stroke-linecap="round" 
+                     stroke-linejoin="round" 
+                     class="user-icon">
+                    <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path>
+                    <circle cx="12" cy="7" r="4"></circle>
+                </svg>
+            </div>
+            <button class="logout-btn">Uitloggen</button>
+        </div>
+    </header>
+
+    <main class="main-content">
+        <section class="welcome-section">
+            <h2>Welkom, <span class="username">Jane</span></h2>
+            <p>Beheer uw afspraken bij de poliklinieken van AZP</p>
+        </section>
+
+        <section class="cards-container">
+            <div class="card">
+                <img src="img/nieuwe-afspraak.PNG" alt="Nieuwe afspraak">
+                <h3>Nieuwe afspraak</h3>
+                <p>Maak een afspraak bij een arts</p>
+                <a class="card-btn" href="nieuwe-afspraak.html">Afspraak maken</a>
+            </div>
+
+            <div class="card">
+                <img src="img/mijn-afspraken.PNG" alt="Mijn afspraken">
+                <h3>Mijn afspraken</h3>
+                <p>Bekijk uw geplande afspraken</p>
+                <a class="card-btn" href="mijn-afspraken.html">Bekijk afspraken</a>
+            </div>
+
+            <div class="card">
+                <img src="img/beschikbare-tijden.PNG" alt="Beschikbare tijden">
+                <h3>Beschikbare tijden</h3>
+                <p>Bekijk vrije tijden van artsen</p>
+                <a class="card-btn" href="beschikbare-tijden.html">Bekijk tijden</a>
+            </div>
+        </section>
+    </main>
+
+<script src="js/patiëntportaal.js"></script>
+
+</body>
+</html>
