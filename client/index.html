@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="nl">
+
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Home | Medixflow</title>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <link rel="stylesheet" href="/client/css/main.css">
+    <link rel="icon" href="img/logo1.PNG" type="image/png">
+  </head>
+
+  <body id="app">
+  <header id="header" :class="{ 'header-scrolled': isScrolled }">
+    <a href="/">
+    <img src="svg/logo.svg" class="logo" alt="Medixflow Logo"></a>
+    <nav class="nav">
+      <a class="nav-link"
+         :class="{ active: currentPage === 'index.html' }"
+         href="index.html">Home</a>
+
+      <a class="nav-link" 
+         :class="{ active: currentPage === 'afdelingen.html' }"
+         href="afdelingen.html">Afdelingen</a>
+
+      <a class="nav-link" 
+         :class="{ active: currentPage === 'artsen.html' }"
+         href="artsen.html">Artsen</a>
+
+      <a class="nav-link" 
+         :class="{ active: currentPage === 'contact.html' }"
+         href="contact.html">Contact</a>
+    </nav>
+
+    <div class="auth-buttons">
+    <a href="login_register.html" class="btn btn-secondary">INLOGGEN</a>
+    </div>
+  </header>
+
+  <main>
+        <section class="hero-section">
+            <div class="hero-inner">
+                <div class="hero-text-card">
+                    <h1>{{ titel }}</h1>
+                    <p>{{ beschrijving }}</p>
+                    <a href="login_register.html" class="btn-cta">AFSPRAAK MAKEN</a>
+                </div>
+                
+                <div class="hero-image-container">
+                    <img src="img/hero.jpg"  alt="hero-foto" class="hero-foto">
+                </div>
+            </div>
+        </section>
+
+        <section class="highlights-section">
+      <div class="highlight-item">
+        <svg xmlns="http://www.w3.org/2000/svg" class="highlight-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
+          <circle cx="9" cy="7" r="4" />
+          <path d="M22 21v-2a4 4 0 0 0-3-3.87" />
+          <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+        </svg>
+        <h3>Verschillende Artsen</h3>
+      </div>
+
+      <div class="highlight-item">
+        <svg xmlns="http://www.w3.org/2000/svg" class="highlight-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="10" />
+          <path d="M12 6v6l4 2" />
+        </svg>
+        <h3>Minder Wachttijd</h3>
+      </div>
+
+      <div class="highlight-item">
+        <svg xmlns="http://www.w3.org/2000/svg" class="highlight-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z" />
+          <path d="M14 2v4a2 2 0 0 0 2 2h4" />
+        </svg>
+        <h3>Digitale Afspraken</h3>
+      </div>
+    </section>
+  </main>
+
+  <footer class="main-footer">
+    <div class="footer-content">
+      <p>&copy; 2026 Medixflow. Alle rechten voorbehouden.</p>
+    </div>
+  </footer>
+
+  <script src="js/script.js"></script>
+  
+</body>
+</html>

@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="nl">
+
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Contact | Medixflow</title>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/contact.css">
+    <link rel="icon" href="img/logo1.PNG" type="image/png">
+  </head>
+
+  <body id="app">
+  <header id="header" :class="{ 'header-scrolled': isScrolled }">
+    <a href="/">
+    <img src="svg/logo.svg" class="logo" alt="Medixflow Logo"></a>
+    <nav class="nav">
+      <a class="nav-link"
+         :class="{ active: currentPage === 'index.html' }"
+         href="index.html">Home</a>
+
+      <a class="nav-link" 
+         :class="{ active: currentPage === 'afdelingen.html' }"
+         href="afdelingen.html">Afdelingen</a>
+
+      <a class="nav-link" 
+         :class="{ active: currentPage === 'artsen.html' }"
+         href="artsen.html">Artsen</a>
+
+      <a class="nav-link" 
+         :class="{ active: currentPage === 'contact.html' }"
+         href="contact.html">Contact</a>
+    </nav>
+
+    <div class="auth-buttons">
+    <a href="login_register.html" class="btn btn-secondary">INLOGGEN</a>
+    </div>
+  </header>
+
+  <main class="contact-page">
+        <section class="contact-header">
+            <h1>Contact Ons</h1>
+            <p>Heeft u vragen of opmerkingen? Stuur ons gerust een bericht!</p>
+        </section>
+
+        <section class="contact-container">
+            <div class="contact-box">
+                <div class="contact-info">
+                    <h2>Contact Informatie</h2>
+                    <ul class="info-list">
+                        <li>
+                            <i class="fas fa-phone-alt"></i>
+                            <span>+597 442-222</span>
+                        </li>
+                        <li>
+                            <i class="fas fa-envelope"></i>
+                            <span>Medixflow@gmail.com</span>
+                        </li>
+                        <li>
+                            <i class="fas fa-map-marker-alt"></i>
+                            <span>RRQ8+3XV, Flustraat, Paramaribo</span>
+                        </li>
+                    </ul>
+                    <div class="circle-decoration"></div>
+                </div>
+
+                <div class="contact-form">
+                    <form id="form-contact" @submit.prevent="submitContactForm">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Voornaam</label>
+                                <input type="text" v-model="contactData.voornaam" placeholder="Voornaam" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Achternaam</label>
+                                <input type="text" v-model="contactData.achternaam" placeholder="Achternaam" required>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Email</label>
+                                <input type="email" v-model="contactData.email" placeholder="Email" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Telefoonnummer</label>
+                                <input type="tel" v-model="contactData.telefoon" placeholder="Telefoonnummer">
+                            </div>
+                        </div>
+                        <div class="form-group full-width">
+                            <label>Vraag/opmerking</label>
+                            <textarea v-model="contactData.bericht" placeholder="Schrijf een bericht.." required></textarea>
+                        </div>
+    
+                        <div class="button-container">
+                            <button type="submit" class="btn-submit">
+                                <span v-if="verzendStatus === 'rust'">Stuur bericht</span>
+                                <span v-if="verzendStatus === 'verzenden'">Verzenden...</span>
+                                <span v-if="verzendStatus === 'verzonden'">Bericht verstuurd!</span>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </section>
+    </main>
+
+  <footer class="main-footer">
+    <div class="footer-content">
+      <p>&copy; 2026 Medixflow. Alle rechten voorbehouden.</p>
+    </div>
+  </footer>
+
+  <script src="js/script.js"></script>
+  
+</body>
+</html>

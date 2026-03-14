@@ -41,20 +41,23 @@
     margin-bottom: 4rem;
 }
 
-.info-details {
+.info-list {
+    list-style: none;
+    padding: 0;
     display: flex;
     flex-direction: column;
     gap: 2rem;
 }
 
-.info-item {
+.info-list li {
     display: flex;
     align-items: center;
     gap: 1.5rem;
 }
 
-.info-item i {
+.info-list i {
     font-size: 1.2rem;
+    width: 20px;
 }
 
 .contact-form {
