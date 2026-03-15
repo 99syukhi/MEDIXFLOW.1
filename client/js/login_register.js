@@ -57,7 +57,6 @@ function togglePasswordVisibility(inputId) {
     }
 }
 
-// 1. Registratie afhandelen
 document.querySelector('#register-section form').addEventListener('submit', async (e) => {
     e.preventDefault();
 
@@ -85,14 +84,15 @@ document.querySelector('#register-section form').addEventListener('submit', asyn
             body: JSON.stringify(formData)
         });
 
-        const data = await response.json();
+        const data = await response.json(); 
 
         if (response.ok) {
             sessionStorage.setItem('token', data.token);
             sessionStorage.setItem('userRole', data.role);
+            sessionStorage.setItem('firstName', data.firstName); 
+            sessionStorage.setItem('lastName', data.lastName); 
             
             alert("Registratie succesvol! Welkom bij MedixFlow.");
-          
             window.location.href = 'patiëntportaal.html';
         } else {
             alert(data.error || "Fout bij registreren");
@@ -102,7 +102,6 @@ document.querySelector('#register-section form').addEventListener('submit', asyn
     }
 });
 
-// 2. Login afhandelen (Patiënt & Admin)
 const handleLogin = async (e, formId) => {
     e.preventDefault();
     const form = document.getElementById(formId);
@@ -125,6 +124,9 @@ const handleLogin = async (e, formId) => {
         if (response.ok) {
             sessionStorage.setItem('token', data.token);
             sessionStorage.setItem('userRole', data.role);
+            sessionStorage.setItem('firstName', data.firstName); 
+            sessionStorage.setItem('lastName', data.lastName);
+            
             if (data.department) sessionStorage.setItem('userDept', data.department);
 
             if (data.role === 'ADMIN') {
@@ -141,6 +143,5 @@ const handleLogin = async (e, formId) => {
     }
 };
 
-// Event listeners koppelen
 document.querySelector('#patient-form form').addEventListener('submit', (e) => handleLogin(e, 'patient-form'));
 document.querySelector('#admin-form form').addEventListener('submit', (e) => handleLogin(e, 'admin-form'));

@@ -4,68 +4,113 @@
   const doctorSelect = document.getElementById("doctorSelect");
   const dateSelect   = document.getElementById("dateSelect");
   const viewBtn      = document.getElementById("viewBtn");
+  const docImg       = document.getElementById("docImg");
+  const docName      = document.getElementById("docName");
+  const docDept      = document.getElementById("docDept");
+  const timesGrid    = document.getElementById("timesGrid");
 
-  const docImg  = document.getElementById("docImg");
-  const docName = document.getElementById("docName");
-  const docDept = document.getElementById("docDept");
-
-  const timesGrid = document.getElementById("timesGrid");
+  const API_URL = 'http://localhost:5000/api/appointments';
 
   const DOCTORS = {
     alexander: {
       name: "Drs. F. Alexander",
       dept: "Kaakchirurgie",
       spec: "Kaakchirurg",
-      img: "/img/doctor-alexander.jpg",
+      img: "img/doctor-alexander.jpg",
     },
     velazquez: {
       name: "Drs. R. Velazquez",
       dept: "Kaakchirurgie",
       spec: "Kaakchirurg",
-      img: "/img/doctor-velazquez.jpg",
+      img: "img/doctor-velazquez.jpg",
     },
   };
 
-  const DEMO_TIMES = [
-    "09:00","09:30","10:00","10:30",
-    "11:00","11:30","12:00","12:30",
-    "14:00","14:30","15:00","15:30",
-    "16:00","16:30","17:00","17:30",
-  ];
+  function getPossibleTimeSlots() {
+    const slots = [];
+    const startMin = 8 * 60 + 30; // 08:30
+    const endMin = 13 * 60 + 30;   // 13:30
+    const interval = 10;
 
-  function canViewTimes(){
+    for (let minutes = startMin; minutes <= endMin; minutes += interval) {
+      const h = Math.floor(minutes / 60).toString().padStart(2, '0');
+      const m = (minutes % 60).toString().padStart(2, '0');
+      slots.push(`${h}:${m}`);
+    }
+    return slots;
+  }
+
+  const ALL_POSSIBLE_TIMES = getPossibleTimeSlots();
+
+  function canViewTimes() {
     return Boolean(doctorSelect?.value) && Boolean(dateSelect?.value);
   }
 
-  function setButtonState(){
-    if (!viewBtn) return;
-    viewBtn.disabled = !canViewTimes();
+  function setButtonState() {
+    if (viewBtn) viewBtn.disabled = !canViewTimes();
   }
 
-  function renderDoctor(){
+  function renderDoctor() {
     const key = doctorSelect.value;
     const d = DOCTORS[key];
-
     if (!d) {
       docName.textContent = "----";
       docDept.textContent = "----";
       return;
     }
-
     docName.textContent = d.name;
     docDept.textContent = `${d.dept} • ${d.spec}`;
     if (docImg) docImg.src = d.img;
   }
 
-  function renderTimes(times){
+  function renderTimes(bookedTimes, doctorObj, selectedDate) {
     timesGrid.innerHTML = "";
-    times.forEach((t) => {
+    
+    ALL_POSSIBLE_TIMES.forEach((t) => {
+      const isBooked = bookedTimes.includes(t);
       const btn = document.createElement("button");
       btn.type = "button";
-      btn.className = "bt-time";
+      btn.className = isBooked ? "bt-time is-booked" : "bt-time";
       btn.textContent = t;
+      btn.disabled = isBooked;
+
+      if (!isBooked) {
+        btn.addEventListener("click", () => handleBooking(doctorObj, selectedDate, t));
+      }
+      
       timesGrid.appendChild(btn);
     });
+  }
+
+  async function handleBooking(doctor, date, time) {
+    if (!confirm(`Bevestig afspraak bij ${doctor.name} op ${date} om ${time}?`)) return;
+
+    const token = sessionStorage.getItem('token');
+    try {
+      const res = await fetch(`${API_URL}/create`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify({
+          doctor: doctor.name,
+          department: doctor.dept,
+          date: date,
+          time: time
+        })
+      });
+
+      if (res.ok) {
+        alert("Afspraak succesvol gepland!");
+        window.location.href = "mijn-afspraken.html";
+      } else {
+        const err = await res.json();
+        alert("Fout: " + err.error);
+      }
+    } catch (e) {
+      alert("Serverfout bij het boeken.");
+    }
   }
 
   doctorSelect?.addEventListener("change", () => {
@@ -75,22 +120,37 @@
 
   dateSelect?.addEventListener("change", setButtonState);
 
-  viewBtn?.addEventListener("click", () => {
-  if (!canViewTimes()) return;
+  viewBtn?.addEventListener("click", async () => {
+    if (!canViewTimes()) return;
 
-  renderDoctor();
-  renderTimes(DEMO_TIMES);
+    const key = doctorSelect.value;
+    const doctor = DOCTORS[key];
+    const date = dateSelect.value;
 
-  const scrollBox = document.getElementById("timesScroll");
-  if (scrollBox) scrollBox.scrollTop = 0;
+    const token = sessionStorage.getItem('token');
+    try {
+      const res = await fetch(API_URL, {
+        headers: { 'Authorization': `Bearer ${token}` }
+      });
+      const appointments = await res.json();
 
-  const card = document.querySelector(".bt-card");
-  if (card) {
-    card.classList.remove("is-animating");
-    void card.offsetWidth;
-    card.classList.add("is-animating");
-  }
-});
+      const booked = appointments
+        .filter(a => a.doctor === doctor.name && a.date.startsWith(date) && a.status === "GEPLAND")
+        .map(a => a.time);
+
+      renderTimes(booked, doctor, date);
+    } catch (e) {
+      console.error("Fout:", e);
+      renderTimes([], doctor, date);
+    }
+
+    const card = document.querySelector(".bt-card");
+    if (card) {
+      card.classList.remove("is-animating");
+      void card.offsetWidth;
+      card.classList.add("is-animating");
+    }
+  });
 
   renderDoctor();
   setButtonState();

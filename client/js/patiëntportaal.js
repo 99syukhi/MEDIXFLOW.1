@@ -1,53 +1,131 @@
-(function () {
-  "use strict";
+const API_URL = 'http://localhost:5000/api';
 
-  const body = document.body;
-  
-  body.classList.add("is-entering");
-  requestAnimationFrame(() => {
-    body.classList.remove("is-entering");
-  });
- 
-  const cards = document.querySelectorAll(".card");
-  window.addEventListener("load", () => {
-    cards.forEach((card, i) => {
-      setTimeout(() => card.classList.add("is-visible"), 80 * i);
+document.addEventListener('DOMContentLoaded', () => {
+    const token = sessionStorage.getItem('token');
+    const userRole = sessionStorage.getItem('userRole');
+
+    if (!token || userRole !== 'PATIENT') {
+        alert("Sessie verlopen of onvoldoende rechten. Log opnieuw in.");
+        window.location.href = 'index.html'; 
+        return;
+    }
+
+const cards = document.querySelectorAll('.card');
+    cards.forEach(card => {
+        card.classList.add('is-visible');
     });
-  });
 
-  function navigateWithFade(href) {
-    if (!href) return;
+    loadWelcomeData();
+});
 
-    body.classList.add("is-leaving");
+function loadWelcomeData() {
+    const firstName = sessionStorage.getItem('firstName') || 'Patiënt';
+    const lastName = sessionStorage.getItem('lastName') || '';
+    
+    const welcomeElement = document.querySelector('.username');
+    if (welcomeElement) {
+        welcomeElement.innerText = `${firstName} ${lastName}`.trim();
+    }
+}
 
-    setTimeout(() => {
-      window.location.href = href;
-    }, 220);
-  }
+async function openProfileModal() {
+    const modal = document.getElementById('profile-modal');
+    modal.style.display = 'block';
 
-  document.addEventListener("click", (e) => {
-    const link = e.target.closest("a");
-    if (!link) return;
+    try {
+        const token = sessionStorage.getItem('token');
+        const response = await fetch(`${API_URL}/user/profile`, {
+            method: 'GET',
+            headers: { 
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json'
+            }
+        });
 
-    const href = link.getAttribute("href");
+        if (response.ok) {
+            const user = await response.json();
+            
+            document.getElementById('display-name').innerText = `${user.firstName} ${user.lastName}`;
+            document.getElementById('display-id').innerText = user.idNumber;
+            document.getElementById('display-email').innerText = user.email;
 
-    if (!href || href.startsWith("http") || href.startsWith("#")) return;
+            document.getElementById('ins-company').value = user.insuranceCompany || '';
+            document.getElementById('ins-type').value = user.insuranceType || '';
+            document.getElementById('ins-number').value = user.insuranceNumber || '';
+            document.getElementById('ins-expiry').value = user.insuranceExpiry || '';
+        } else {
+            console.error("Kon profiel niet laden");
+        }
+    } catch (err) {
+        console.error("Fout bij ophalen profiel:", err);
+    }
+}
 
-    e.preventDefault();
-    navigateWithFade(href);
-  });
+function closeProfileModal() {
+    document.getElementById('profile-modal').style.display = 'none';
+}
 
-  
-  const buttons = document.querySelectorAll("button.card-btn, .logout-btn");
-  buttons.forEach((btn) => {
-    btn.addEventListener("mousedown", () => {
-      btn.style.transform = "translateY(1px)";
-    });
-    btn.addEventListener("mouseup", () => {
-      btn.style.transform = "";
-    });
-    btn.addEventListener("mouseleave", () => {
-      btn.style.transform = "";
-    });
-  });
-})();
+function openTab(evt, tabName) {
+    const tabContents = document.getElementsByClassName("tab-content");
+    for (let content of tabContents) {
+        content.classList.remove("active");
+    }
+
+    const tabBtns = document.getElementsByClassName("tab-btn");
+    for (let btn of tabBtns) {
+        btn.classList.remove("active");
+    }
+
+    document.getElementById(tabName).classList.add("active");
+    evt.currentTarget.classList.add("active");
+}
+
+async function saveInsurance() {
+    const token = sessionStorage.getItem('token');
+    const insuranceData = {
+      insuranceCompany: document.getElementById('ins-company').value,
+      insuranceType: document.getElementById('ins-type').value,
+      insuranceNumber: document.getElementById('ins-number').value,
+      insuranceExpiry: document.getElementById('ins-expiry').value
+  };
+
+    try {
+        const response = await fetch(`${API_URL}/user/profile/update`, {
+            method: 'PUT',
+            headers: { 
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json' 
+            },
+            body: JSON.stringify(insuranceData)
+        });
+
+        const data = await response.json();
+
+        if (response.ok) {
+            alert("Verzekeringsgegevens succesvol bijgewerkt!");
+        } else {
+            alert(data.error || "Fout bij opslaan");
+        }
+    } catch (err) {
+        console.error("Opslaan mislukt:", err);
+        alert("Serverfout bij het opslaan.");
+    }
+}
+
+document.querySelector('.logout-btn').addEventListener('click', () => {
+    if (confirm("Weet u zeker dat u wilt uitloggen?")) {
+        sessionStorage.clear(); // Verwijdert token, naam en rol
+        window.location.href = 'index.html';
+    }
+});
+
+window.onclick = function(event) {
+    const modal = document.getElementById('profile-modal');
+    if (event.target == modal) {
+        closeProfileModal();
+    }
+}
+
+function handleForgotPassword() {
+    alert("Er is een herstel-link gestuurd naar uw geregistreerde e-mailadres.");
+}
