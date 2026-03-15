@@ -130,7 +130,7 @@ const handleLogin = async (e, formId) => {
             if (data.department) sessionStorage.setItem('userDept', data.department);
 
             if (data.role === 'ADMIN') {
-                window.location.href = 'admin.html';
+                window.location.href = 'admin-dashboard.html';
             } else {
                 window.location.href = 'patiëntportaal.html';
             }
