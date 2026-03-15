@@ -295,35 +295,43 @@ body.bt-page{
   background: transparent; 
 }
 
-.bt-times-grid{
-  display:grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 18px 28px;
-  padding: 10px 6px 6px;
+.bt-times-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+  padding: 10px;
 }
 
 .bt-time {
-    background: #f0f7f2;
-    border: 1px solid var(--green);
-    padding: 12px 10px;
-    border-radius: 8px;
-    font-weight: 700;
-    color: var(--green-dark);
-    cursor: pointer;
-    transition: all .2s ease;
-    text-align: center;
+  padding: 10px 5px;
+  font-size: 14px;
+  font-weight: 600;
+  border: 1px solid #4A7C59;
+  background: #f0f7f1;
+  color: #4A7C59;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: 0.2s;
 }
 
-.bt-time:hover {
-    background: var(--green);
-    color: #fff;
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(74,124,89,0.2);
+.bt-time:hover:not(:disabled) {
+  background: #4A7C59;
+  color: white;
 }
 
-@keyframes btFadeUp {
-  from { opacity: 0; transform: translateY(10px); }
-  to   { opacity: 1; transform: translateY(0); }
+.bt-time.is-booked {
+  background: #f1f5f9;
+  border-color: #cbd5e1;
+  color: #94a3b8;
+  cursor: not-allowed;
+  text-decoration: line-through;
+  opacity: 0.6;
+}
+
+@media (max-width: 600px) {
+  .bt-times-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
 }
 
 .bt-card.is-animating .bt-times-scroll{
@@ -344,4 +352,9 @@ body.bt-page{
   .logout-btn{ padding:8px 14px; font-size:13px; }
   .bt-title h2{ font-size:34px; }
   .bt-times-grid{ grid-template-columns: 1fr; }
+}
+
+@keyframes btFadeUp {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
 }
