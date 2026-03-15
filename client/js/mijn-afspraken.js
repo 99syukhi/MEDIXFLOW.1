@@ -61,11 +61,19 @@
       if (!response.ok) throw new Error('Laden mislukt');
 
       const appointments = await response.json();
-      const nu = new Date();
-      nu.setHours(0, 0, 0, 0);
 
-      const toekomstig = appointments.filter(a => new Date(a.date) >= nu);
-      const eerder = appointments.filter(a => new Date(a.date) < nu);
+      const nu = new Date();
+      nu.setUTCHours(0, 0, 0, 0); 
+
+      const toekomstig = appointments.filter(a => {
+        const apptDate = new Date(a.date);
+        return apptDate >= nu && a.status === "GEPLAND";
+      });
+      
+      const eerder = appointments.filter(a => {
+        const apptDate = new Date(a.date);
+        return apptDate < nu || a.status === "GECANCELLED";
+      });
 
       renderTable(document.querySelector('.panel-toekomstig'), toekomstig, true);
       renderTable(document.querySelector('.panel-eerder'), eerder, false);
@@ -88,7 +96,7 @@
   container.innerHTML = data.map(appt => `
     <div class="tr">
       <div class="td td-date" data-label="Datum">
-        <span class="pill">${new Date(appt.date).toLocaleDateString('nl-NL')}</span>
+        <span class="pill">${new Date(appt.date).toLocaleDateString('nl-NL', { timeZone: 'UTC' })}</span>
       </div>
       <div class="td td-time" data-label="Tijd">
         <span class="pill">${appt.time}</span>
