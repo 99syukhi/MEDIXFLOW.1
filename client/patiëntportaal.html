@@ -14,7 +14,7 @@
             <img src="img/medixflow-logo.png" alt="MedixFlow Logo" class="logo">
         </div>
 
-        <div class="user-section">
+        <div class="user-section" onclick="openProfileModal()" style="cursor: pointer;">
             <div class="user-icon-wrapper">
                 <svg xmlns="http://www.w3.org/2000/svg" 
                      width="24" 
@@ -64,7 +64,66 @@
         </section>
     </main>
 
-<script src="js/patiëntportaal.js"></script>
+    <div id="profile-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Mijn Profiel</h2>
+                <span class="close-btn" onclick="closeProfileModal()">&times;</span>
+            </div>
+            
+            <div class="tab-menu">
+                <button class="tab-btn active" onclick="openTab(event, 'algemeen')">Algemeen</button>
+                <button class="tab-btn" onclick="openTab(event, 'verzekering')">Verzekering</button>
+                <button class="tab-btn" onclick="openTab(event, 'instellingen')">Instellingen</button>
+            </div>
+
+            <div id="algemeen" class="tab-content active">
+                <div class="info-group">
+                    <label>Volledige naam</label>
+                    <p id="display-name">Laden...</p>
+                </div>
+                <div class="info-group">
+                    <label>ID-Nummer</label>
+                    <p id="display-id">Laden...</p>
+                </div>
+                <div class="info-group">
+                    <label>E-mailadres</label>
+                    <p id="display-email">Laden...</p>
+                </div>
+            </div>
+
+            <div id="verzekering" class="tab-content">
+    <div class="input-group">
+        <label>Verzekeringsmaatschappij</label>
+        <input type="text" id="ins-company" placeholder="Bijv. Assuria, SZF, Self Reliance">
+    </div>
+    
+    <div class="input-group">
+        <label>Polis Type</label>
+        <input type="text" id="ins-type" placeholder="Bijv. AZPAS Plus, Bazo, Particulier">
+    </div>
+
+    <div class="input-group">
+        <label>Polisnummer</label>
+        <input type="text" id="ins-number" placeholder="Voer uw polisnummer in">
+    </div>
+
+    <div class="input-group">
+        <label>Vervaldatum</label>
+        <input type="date" id="ins-expiry">
+    </div>
+
+    <button class="save-btn" onclick="saveInsurance()">Gegevens Opslaan</button>
+</div>
+
+            <div id="instellingen" class="tab-content">
+                <p>Wilt u uw wachtwoord wijzigen? Klik op de knop hieronder om een herstelmail te ontvangen.</p>
+                <button class="forgot-pw-btn" onclick="handleForgotPassword()">Wachtwoord Vergeten?</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/patiëntportaal.js"></script>
 
 </body>
 </html>
