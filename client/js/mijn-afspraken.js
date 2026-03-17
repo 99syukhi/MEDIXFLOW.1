@@ -8,7 +8,7 @@
   const panels = document.querySelectorAll(".panel[data-panel]");
   const backLink = document.querySelector(".back-btn");
 
-  const API_URL = 'http://localhost:5000/api/appointments';
+  const API_URL = 'http://localhost:5000/api/user';
 
   if (!tabsContainer || !tabs.length || !panels.length) return;
 
@@ -47,44 +47,44 @@
     panels.forEach(p => p.classList.toggle("is-active", p.dataset.panel === tabKey));
   }
 
-  async function loadAppointments() {
+async function loadAppointments() {
     const token = sessionStorage.getItem('token');
     if (!token) {
-      window.location.href = 'index.html';
-      return;
+        window.location.href = 'index.html';
+        return;
     }
 
     try {
-      const response = await fetch(API_URL, {
-        headers: { 'Authorization': `Bearer ${token}` }
-      });
-      if (!response.ok) throw new Error('Laden mislukt');
+        const response = await fetch(`${API_URL}/appointments`, { 
+            headers: { 'Authorization': `Bearer ${token}` }
+        });
+        if (!response.ok) throw new Error('Laden mislukt');
 
-      const appointments = await response.json();
+        const appointments = await response.json();
 
-      const nu = new Date();
-      nu.setUTCHours(0, 0, 0, 0); 
+        const nu = new Date();
+        nu.setUTCHours(0, 0, 0, 0); 
 
-      const toekomstig = appointments.filter(a => {
-        const apptDate = new Date(a.date);
-        return apptDate >= nu && a.status === "GEPLAND";
-      });
-      
-      const eerder = appointments.filter(a => {
-        const apptDate = new Date(a.date);
-        return apptDate < nu || a.status === "GECANCELLED";
-      });
+        const toekomstig = appointments.filter(a => {
+            const apptDate = new Date(a.date);
+            return apptDate >= nu && a.status === "GEPLAND";
+        });
+        
+        const eerder = appointments.filter(a => {
+            const apptDate = new Date(a.date);
+            return apptDate < nu || a.status === "GECANCELLED" || a.status === "VOLTOOID";
+        });
 
-      renderTable(document.querySelector('.panel-toekomstig'), toekomstig, true);
-      renderTable(document.querySelector('.panel-eerder'), eerder, false);
+        const containerToekomstig = document.querySelector('.panel[data-panel="toekomstig"]');
+        const containerEerder = document.querySelector('.panel[data-panel="eerder"]');
+
+        renderTable(containerToekomstig, toekomstig, true);
+        renderTable(containerEerder, eerder, false);
 
     } catch (err) {
-      console.error(err);
-      document.querySelectorAll('.table-body').forEach(el => {
-        el.innerHTML = '<div class="tr"><div class="td" style="grid-column: span 4; text-align:center; padding: 20px;">Fout bij laden van gegevens.</div></div>';
-      });
+        console.error("Fout bij laden:", err);
     }
-  }
+}
 
   function renderTable(container, data, allowCancel) {
   if (!container) return;
@@ -126,27 +126,29 @@
 }
 
   window.cancelAppointment = async function(id) {
-    if (!confirm("Weet u zeker dat u deze afspraak wilt annuleren? Het tijdstip komt dan weer vrij.")) return;
+    if (!confirm("Weet u zeker dat u deze afspraak wilt annuleren?")) return;
     
     const token = sessionStorage.getItem('token');
     try {
-      const res = await fetch(`${API_URL}/${id}/cancel`, {
+        const res = await fetch(`${API_URL}/appointments/${id}/cancel`, {
         method: 'PATCH',
-        headers: { 
-          'Authorization': `Bearer ${token}`,
-          'Content-Type': 'application/json'
-        }
-      });
+            headers: { 
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json'
+            }
+        });
 
-      if (res.ok) {
-        loadAppointments();
-      } else {
-        alert("Annuleren mislukt.");
-      }
+        if (res.ok) {
+            alert("Afspraak is geannuleerd.");
+            loadAppointments(); 
+        } else {
+            const errorData = await res.json();
+            alert("Annuleren mislukt: " + (errorData.error || "Onbekende fout"));
+        }
     } catch (err) {
-      alert("Serverfout bij annuleren.");
+        alert("Serverfout bij annuleren.");
     }
-  };
+};
 
   setActive("toekomstig", false);
   loadAppointments();

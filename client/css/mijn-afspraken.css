@@ -256,8 +256,9 @@ body.is-leaving, body.is-entering {
   padding: 10px 16px;
   border-radius: 6px;
   font-size: 14px;
-  transition: 0.2s ease;
+  transition: 0.2s ease;         
 }
+
 
 .back-btn:hover {
   background: rgba(74,124,89,0.10);

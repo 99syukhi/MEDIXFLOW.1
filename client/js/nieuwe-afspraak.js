@@ -1,9 +1,7 @@
 (function () {
   "use strict";
 
-  const body = document.body;
-  const API_URL = 'http://localhost:5000/api/appointments';
-
+  const API_URL = 'http://localhost:5000/api/user';
   let selectedDept = "";
   let selectedDoctor = "";
 
@@ -18,44 +16,82 @@
     dateInput.setAttribute('min', today);
   }
 
-  function fillTimeSlots() {
-    if (!timeSelect) return;
-    timeSelect.innerHTML = '<option value="" disabled selected>Kies een tijdstip...</option>';
-
-    const startMin = 8 * 60 + 30; // 08:30
-    const endMin = 13 * 60 + 30;   // 13:30
-    const interval = 10;
-
-    for (let minutes = startMin; minutes <= endMin; minutes += interval) {
-      const h = Math.floor(minutes / 60).toString().padStart(2, '0');
-      const m = (minutes % 60).toString().padStart(2, '0');
-      const timeString = `${h}:${m}`;
-
-      const option = document.createElement('option');
-      option.value = timeString;
-      option.textContent = timeString + " uur";
-      timeSelect.appendChild(option);
+  async function fillTimeSlots() {
+    if (!timeSelect || !dateInput.value || !selectedDoctor) {
+        console.warn("Kan tijdstippen niet laden: ontbrekende gegevens.");
+        return;
     }
+
+    const token = sessionStorage.getItem('token');
+    const dateVal = dateInput.value;
+
+    try {
+        timeSelect.innerHTML = '<option value="" disabled selected>Laden...</option>';
+
+        const res = await fetch(`${API_URL}/appointments/check-availability?doctor=${encodeURIComponent(selectedDoctor)}&date=${dateVal}`, {
+            headers: { 
+                'Authorization': `Bearer ${token}`,
+                'Accept': 'application/json'
+            }
+        });
+
+        if (!res.ok) throw new Error("Kon beschikbaarheid niet laden");
+        
+        const occupiedTimes = await res.json(); 
+
+        timeSelect.innerHTML = '<option value="" disabled selected>Kies een tijdstip...</option>';
+
+        const startMin = 8 * 60 + 30; 
+        const endMin = 13 * 60 + 30;  
+        const interval = 10;
+
+        for (let minutes = startMin; minutes <= endMin; minutes += interval) {
+            const h = Math.floor(minutes / 60).toString().padStart(2, '0');
+            const m = (minutes % 60).toString().padStart(2, '0');
+            const timeString = `${h}:${m}`;
+
+            const isOccupied = occupiedTimes.includes(timeString);
+            const option = document.createElement('option');
+            option.value = timeString;
+            
+            if (isOccupied) {
+                option.textContent = `${timeString} uur (Bezet)`;
+                option.disabled = true;
+                option.className = "time-occupied"; 
+            } else {
+                option.textContent = `${timeString} uur`;
+            }
+            timeSelect.appendChild(option);
+        }
+    } catch (err) {
+        console.error("Fetch error:", err);
+        timeSelect.innerHTML = '<option value="" disabled selected>Fout bij laden</option>';
+    }
+}
+
+  function showStep(stepNumber, animate = true) {
+    panels.forEach((p) => p.classList.remove("is-active", "is-animating"));
+    const target = getPanel(stepNumber);
+    if (target) {
+      target.classList.add("is-active");
+      if (animate) {
+        target.classList.remove("is-animating");
+        void target.offsetWidth; 
+        target.classList.add("is-animating");
+      }
+    }
+    setStepperState(stepNumber);
+    window.scrollTo({ top: 0, behavior: "smooth" });
   }
 
   function getPanel(stepNumber) {
-    return (
-      document.querySelector(`.panel-wrap [data-step="${stepNumber}"]`) ||
-      document.querySelector(`.panel-wrap [data-panel="${stepNumber}"]`)
-    );
-  }
-
-  function animatePanel(panel) {
-    if (!panel) return;
-    panel.classList.remove("is-animating");
-    void panel.offsetWidth; 
-    panel.classList.add("is-animating");
+    return document.querySelector(`.panel-wrap [data-step="${stepNumber}"]`) ||
+           document.querySelector(`.panel-wrap [data-panel="${stepNumber}"]`);
   }
 
   function setStepperState(activeStep) {
     if (stepper) {
-      stepper.classList.remove("step-1", "step-2", "step-3", "step-4");
-      stepper.classList.add(`step-${activeStep}`);
+      stepper.className = `stepper step-${activeStep}`;
     }
     steps.forEach((s) => {
       const n = Number(s.dataset.step);
@@ -64,37 +100,27 @@
     });
   }
 
-  function showStep(stepNumber, animate = true) {
-    panels.forEach((p) => p.classList.remove("is-active", "is-animating"));
-    const target = getPanel(stepNumber);
-    if (target) {
-      target.classList.add("is-active");
-      if (animate) animatePanel(target);
-    }
-    setStepperState(stepNumber);
-    window.scrollTo({ top: 0, behavior: "smooth" });
-  }
-
-  showStep(1, false);
-
   if (dateInput) {
     dateInput.addEventListener("change", function() {
       const date = new Date(this.value);
       const day = date.getUTCDay();
+      
       if (day === 0 || day === 6) {
         alert("Het ziekenhuis is in het weekend gesloten. Kies a.u.b. een doordeweekse dag.");
         this.value = "";
+        timeSelect.innerHTML = '<option value="" disabled selected>Kies eerst een datum...</option>';
+      } else if (selectedDoctor) {
+        fillTimeSlots();
       }
     });
   }
 
   document.addEventListener("click", async (e) => {
-
     const deptBtn = e.target.closest(".js-pick-dept");
     if (deptBtn) {
       const card = deptBtn.closest(".pick-card");
       selectedDept = card?.dataset.dept || "Kaakchirurgie";
-      showStep(2, true);
+      showStep(2);
       return;
     }
 
@@ -103,14 +129,14 @@
       const card = docBtn.closest(".pick-card");
       selectedDoctor = card?.querySelector('h4')?.innerText || "Onbekende Arts";
       fillTimeSlots(); 
-      showStep(3, true);
+      showStep(3);
       return;
     }
 
     if (e.target.closest(".js-back") || e.target.closest("[data-action='back-to-2']")) {
       const activeStep = document.querySelector(".step.is-active");
       const currentN = Number(activeStep?.dataset.step || 3);
-      showStep(currentN - 1, true);
+      showStep(currentN - 1);
       return;
     }
 
@@ -121,8 +147,7 @@
       if (action === "cancel") {
         if (dateInput) dateInput.value = "";
         if (timeSelect) timeSelect.selectedIndex = 0;
-        showStep(1, true);
-        return;
+        showStep(1);
       }
 
       if (action === "confirm") {
@@ -130,13 +155,13 @@
         const timeVal = timeSelect?.value;
 
         if (!dateVal || !timeVal) {
-          alert("Selecteer a.u.b. een geldige datum en tijd.");
+          alert("Selecteer een datum en tijdstip.");
           return;
         }
 
         try {
           const token = sessionStorage.getItem('token');
-          const response = await fetch(`${API_URL}/create`, {
+          const response = await fetch(`${API_URL}/create-appointment`, {
             method: 'POST',
             headers: { 
               'Content-Type': 'application/json',
@@ -151,16 +176,12 @@
           });
 
           const data = await response.json();
-
           if (response.ok) {
-            showStep(4, true);
-          } else if (response.status === 409) {
-            alert("Conflict: " + data.error);
+            showStep(4);
           } else {
             alert(data.error || "Er ging iets mis bij het inplannen.");
           }
         } catch (err) {
-          console.error("Fetch error:", err);
           alert("Geen verbinding met de server.");
         }
       }
@@ -174,4 +195,7 @@
       window.location.href = "index.html";
     });
   }
+
+  showStep(1, false);
+
 })();

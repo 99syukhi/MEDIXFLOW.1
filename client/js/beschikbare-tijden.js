@@ -9,7 +9,7 @@
   const docDept      = document.getElementById("docDept");
   const timesGrid    = document.getElementById("timesGrid");
 
-  const API_URL = 'http://localhost:5000/api/appointments';
+  const API_URL = 'http://localhost:5000/api/user';
 
   const DOCTORS = {
     alexander: {
@@ -28,8 +28,8 @@
 
   function getPossibleTimeSlots() {
     const slots = [];
-    const startMin = 8 * 60 + 30; // 08:30
-    const endMin = 13 * 60 + 30;   // 13:30
+    const startMin = 8 * 60 + 30; 
+    const endMin = 13 * 60 + 30;   
     const interval = 10;
 
     for (let minutes = startMin; minutes <= endMin; minutes += interval) {
@@ -63,31 +63,34 @@
     if (docImg) docImg.src = d.img;
   }
 
-  function renderTimes(bookedTimes, doctorObj, selectedDate) {
-    timesGrid.innerHTML = "";
+function renderTimes(bookedTimes, doctorObj, selectedDate) {
+    timesGrid.innerHTML = ""; 
     
     ALL_POSSIBLE_TIMES.forEach((t) => {
-      const isBooked = bookedTimes.includes(t);
-      const btn = document.createElement("button");
-      btn.type = "button";
-      btn.className = isBooked ? "bt-time is-booked" : "bt-time";
-      btn.textContent = t;
-      btn.disabled = isBooked;
+        const isBooked = bookedTimes.includes(t); 
+        
+        const btn = document.createElement("button");
+        btn.type = "button";
 
-      if (!isBooked) {
-        btn.addEventListener("click", () => handleBooking(doctorObj, selectedDate, t));
-      }
-      
-      timesGrid.appendChild(btn);
+        btn.className = isBooked ? "bt-time is-booked" : "bt-time";
+        btn.textContent = t;
+        
+        if (isBooked) {
+            btn.disabled = true;
+        } else {
+            btn.addEventListener("click", () => handleBooking(doctorObj, selectedDate, t));
+        }
+        
+        timesGrid.appendChild(btn);
     });
-  }
+}
 
   async function handleBooking(doctor, date, time) {
     if (!confirm(`Bevestig afspraak bij ${doctor.name} op ${date} om ${time}?`)) return;
 
     const token = sessionStorage.getItem('token');
     try {
-      const res = await fetch(`${API_URL}/create`, {
+      const res = await fetch(`${API_URL}/create-appointment`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -106,7 +109,7 @@
         window.location.href = "mijn-afspraken.html";
       } else {
         const err = await res.json();
-        alert("Fout: " + err.error);
+        alert("Fout: " + (err.error || "Kon afspraak niet boeken"));
       }
     } catch (e) {
       alert("Serverfout bij het boeken.");
@@ -126,21 +129,21 @@
     const key = doctorSelect.value;
     const doctor = DOCTORS[key];
     const date = dateSelect.value;
-
     const token = sessionStorage.getItem('token');
+
     try {
-      const res = await fetch(API_URL, {
+      const res = await fetch(`${API_URL}/appointments/check-availability?doctor=${encodeURIComponent(doctor.name)}&date=${date}`, {
         headers: { 'Authorization': `Bearer ${token}` }
       });
-      const appointments = await res.json();
 
-      const booked = appointments
-        .filter(a => a.doctor === doctor.name && a.date.startsWith(date) && a.status === "GEPLAND")
-        .map(a => a.time);
+      if (!res.ok) throw new Error("Beschikbaarheid ophalen mislukt");
+
+      const booked = await res.json(); 
 
       renderTimes(booked, doctor, date);
     } catch (e) {
       console.error("Fout:", e);
+      alert("Geen verbinding met de server of fout bij laden tijden.");
       renderTimes([], doctor, date);
     }
 

@@ -1,8 +1,8 @@
-const API_URL = 'http://localhost:5000/api';
+const API_URL = 'http://localhost:5000/api/user';
 
 document.addEventListener('DOMContentLoaded', () => {
     const token = sessionStorage.getItem('token');
-    const userRole = sessionStorage.getItem('userRole');
+    const userRole = sessionStorage.getItem('role'); 
 
     if (!token || userRole !== 'PATIENT') {
         alert("Sessie verlopen of onvoldoende rechten. Log opnieuw in.");
@@ -34,7 +34,7 @@ async function openProfileModal() {
 
     try {
         const token = sessionStorage.getItem('token');
-        const response = await fetch(`${API_URL}/user/profile`, {
+        const response = await fetch(`${API_URL}/profile`, { 
             method: 'GET',
             headers: { 
                 'Authorization': `Bearer ${token}`,
@@ -44,7 +44,7 @@ async function openProfileModal() {
 
         if (response.ok) {
             const user = await response.json();
-            
+
             document.getElementById('display-name').innerText = `${user.firstName} ${user.lastName}`;
             document.getElementById('display-id').innerText = user.idNumber;
             document.getElementById('display-email').innerText = user.email;
@@ -52,9 +52,12 @@ async function openProfileModal() {
             document.getElementById('ins-company').value = user.insuranceCompany || '';
             document.getElementById('ins-type').value = user.insuranceType || '';
             document.getElementById('ins-number').value = user.insuranceNumber || '';
-            document.getElementById('ins-expiry').value = user.insuranceExpiry || '';
-        } else {
-            console.error("Kon profiel niet laden");
+
+            if (user.insuranceExpiry) {
+                document.getElementById('ins-expiry').value = user.insuranceExpiry.split('T')[0];
+            } else {
+                document.getElementById('ins-expiry').value = '';
+            }
         }
     } catch (err) {
         console.error("Fout bij ophalen profiel:", err);
@@ -87,10 +90,10 @@ async function saveInsurance() {
       insuranceType: document.getElementById('ins-type').value,
       insuranceNumber: document.getElementById('ins-number').value,
       insuranceExpiry: document.getElementById('ins-expiry').value
-  };
+    };
 
     try {
-        const response = await fetch(`${API_URL}/user/profile/update`, {
+        const response = await fetch(`${API_URL}/update-profile`, { 
             method: 'PUT',
             headers: { 
                 'Authorization': `Bearer ${token}`,
@@ -114,7 +117,7 @@ async function saveInsurance() {
 
 document.querySelector('.logout-btn').addEventListener('click', () => {
     if (confirm("Weet u zeker dat u wilt uitloggen?")) {
-        sessionStorage.clear(); // Verwijdert token, naam en rol
+        sessionStorage.clear();
         window.location.href = 'index.html';
     }
 });
