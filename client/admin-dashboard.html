@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard | Medixflow</title>
+    
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    
+    <link href="https://cdn.jsdelivr.net/npm/vanilla-calendar-pro/build/vanilla-calendar.min.css" rel="stylesheet">
+    
+    <link rel="stylesheet" href="css/admin-dashboard.css" />
+    <link rel="icon" href="img/logo1.PNG" type="image/png">
+</head>
+
+<body class="admin-page">
+
+    <div class="dashboard-container">
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <img src="img/medixflow-logo.png" alt="MedixFlow" class="logo-img">
+                <div class="clinic-info">
+                    <span class="admin-label">Beheerpaneel</span>
+                    <h3 id="deptTitle">Laden...</h3>
+                </div>
+            </div>
+
+            <nav class="sidebar-nav">
+                <div class="sidebar-actions">
+                    <button id="openModalBtn" class="btn-primary-action">
+                    <i data-lucide="plus-circle"></i> Nieuwe Afspraak
+                </div>
+                <ul>
+                    <li class="nav-item">
+                        <a href="#main-header" class="nav-link active" data-section="overzicht">
+                            <i data-lucide="layout-dashboard"></i> Overzicht
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#artsen-anchor" class="nav-link">
+                            <i data-lucide="stethoscope"></i> Dokters
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#appointments-section" class="nav-link" data-section="appointments">
+                            <i data-lucide="calendar"></i> Afspraken
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="client/patientList.html" class="nav-link" data-section="patients">
+                            <i data-lucide="users"></i> Patiënten & Dossiers
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+
+            <div class="sidebar-footer">
+                <button class="logout-btn">
+                    <i data-lucide="log-out"></i> Uitloggen
+                </button>
+            </div>
+        </aside>
+
+        <main class="main-content">
+            <header id="main-header" class="main-header">
+                <h1 id="welcomeText">Welkom terug</h1>
+                <div class="header-actions">
+                    <span id="currentDate"></span>
+                </div>
+            </header>
+
+            <section id="section-overzicht" class="dashboard-section active">
+                <div class="stats-grid">
+                    <div class="stat-card clickable">
+                        <div class="stat-icon">👨‍⚕️</div>
+                        <div class="stat-info">
+                            <h3 id="countDoctors">0</h3>
+                            <p>Specialisten</p>
+                        </div>
+                    </div>
+                    <div class="stat-card clickable">
+                        <div class="stat-icon">👥</div>
+                        <div class="stat-info">
+                            <h3 id="countPatients">0</h3>
+                            <p>Patiënten</p>
+                        </div>
+                    </div>
+                    <div class="stat-card clickable">
+                        <div class="stat-icon">📅</div>
+                        <div class="stat-info">
+                            <h3 id="countAppointments">0</h3>
+                            <p>Toekomstige Afspraken</p>
+                        </div>
+                    </div>
+                </div>
+            
+
+                <section class="dashboard-grid">
+                    <div class="chart-container">
+                        <div class="chart-header">
+                            <h3>Afspraak Statistieken</h3>
+                            <div class="filters">
+                                <select id="filter-dokter">
+                                    <option value="alle">Alle Doktoren</option>
+                                </select>
+                                <select id="filter-periode">
+                                    <option value="dag">Dag</option>
+                                    <option value="week">Week</option>
+                                    <option value="maand">Maand</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="chart-summary">
+                            <div class="summary-card">
+                                <span class="label"><span class="dot blue"></span> Totaal</span>
+                                <strong class="value" id="total-count">0</strong>
+                            </div>
+                            <div class="summary-card">
+                                <span class="label"><span class="dot red"></span> Geannuleerd</span>
+                                <strong class="value" id="cancelled-count">0</strong>
+                            </div>
+                            <div class="summary-card">
+                                <span class="label"><span class="dot green"></span> Voltooid</span>
+                                <strong class="value" id="completed-count">0</strong>
+                            </div>
+                        </div>
+
+                        <div class="canvas-wrapper">
+                            <canvas id="statsChart"></canvas>
+                        </div>
+                    </div>
+
+                    <div class="calendar-container">
+                        <div id="calendar" class="vanilla-calendar"></div> 
+                        
+                        <div id="day-details" class="details-box">
+                            <h4>Details voor <span id="selected-date">-</span></h4>
+                            <ul>
+                                <li>Consults: <span id="count-consult">0</span></li>
+                                <li>Operaties: <span id="count-operatie">0</span></li>
+                                <li>Check-ups: <span id="count-checkup">0</span></li>
+                            </ul>
+                        </div>
+                    </div>
+                </section>
+            </section>
+
+            <section class="vandaag-afspraken-section">
+                <div class="section-header">
+                    <h3>Afspraken voor Vandaag</h3>
+                    <span id="vandaag-datum-label" class="date-badge"></span>
+                </div>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Tijd</th>
+                                <th>Patiënt</th>
+                                <th>Dokter</th>
+                                <th>Type</th>
+                                <th>Status</th>
+                                <th>Actie</th>
+                            </tr>
+                        </thead>
+                            <tbody id="vandaag-table-body">
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <section id="artsen-anchor" class="doctors-overview-section">
+                <div class="section-header">
+                    <div class="header-left">
+                        <h3>Actieve Artsen</h3>
+                        <span class="doctor-count-badge" id="doctor-count-badge">0 specialisten</span>
+                    </div>
+                        <button class="btn-add-mini"><i data-lucide="plus"></i></button>
+                </div>
+    
+                <div id="doctors-grid" class="doctors-horizontal-grid">
+                </div>
+            </section>
+
+            <section id="appointments-section" class="appointments-section">
+    <div class="section-header">
+        <div class="header-left">
+            <h3>Recente Afspraken</h3>
+        </div>
+        
+        <div class="table-header-actions">
+            <div class="filter-group">
+                <label for="filter-dokter">Filter op Dokter</label>
+                <select id="filter-dokter" class="dashboard-select">
+                    <option value="all">Alle Doktoren</option>
+                </select>
+            </div>
+            <button class="view-all-btn" onclick="window.location.href='appointments-full.html'">
+                Bekijk Alles
+            </button>
+        </div>
+    </div>
+
+    <div class="table-container">
+        <table class="appointments-table">
+            <thead>
+                <tr>
+                    <th>Dokter</th>
+                    <th>Patiënt</th>
+                    <th>Datum & Tijd</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody id="appointments-table-body">
+                </tbody>
+        </table>
+    </div>
+</section>
+        </main>
+    </div>
+
+    <script src="js/vanilla-calendar.min.js"></script>
+    <script src="js/admin-dashboard.js"></script>
+</body>
+
+    <div id="appointmentModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Afspraak Inplannen</h2>
+                <span class="close-modal">&times;</span>
+            </div>
+            <form id="appointmentForm">
+                <div class="form-group">
+                    <label>Patiënt Zoeken (Naam of ID)</label>
+                        <input type="text" id="patientSearchInput" list="patientList" name="patientName" required placeholder="Typ om te zoeken...">
+                            <datalist id="patientList"></datalist>
+                        <input type="hidden" id="selectedPatientId" name="userId">
+                </div>
+                <div class="form-group">
+                    <label>Type</label>
+                        <select name="type">
+                            <option value="Check-up">Check-up</option>
+                            <option value="Operatie">Operatie</option>
+                            <option value="Consult">Consult</option>
+                        </select>
+                </div>
+                <div class="form-group">
+                    <label>Dokter</label>
+                        <select id="modal-doctor-select" name="doctor">
+                        </select>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Datum</label>
+                            <input type="date" name="date" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Tijdstip</label>
+                            <select id="timeSlotSelect" name="time" required>
+                                <option value="">Kies een tijd...</option>
+                            </select>
+                    </div>
+                </div>
+                    <button type="submit" class="submit-btn">Afspraak Opslaan</button>
+            </form>
+        </div>
+    </div>
+
+</html>

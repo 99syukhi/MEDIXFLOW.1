@@ -88,7 +88,7 @@ document.querySelector('#register-section form').addEventListener('submit', asyn
 
         if (response.ok) {
             sessionStorage.setItem('token', data.token);
-            sessionStorage.setItem('userRole', data.role);
+            sessionStorage.setItem('role', data.role);
             sessionStorage.setItem('firstName', data.firstName); 
             sessionStorage.setItem('lastName', data.lastName); 
             
@@ -123,11 +123,13 @@ const handleLogin = async (e, formId) => {
 
         if (response.ok) {
             sessionStorage.setItem('token', data.token);
-            sessionStorage.setItem('userRole', data.role);
+            sessionStorage.setItem('role', data.role); 
             sessionStorage.setItem('firstName', data.firstName); 
             sessionStorage.setItem('lastName', data.lastName);
             
-            if (data.department) sessionStorage.setItem('userDept', data.department);
+            if (data.department) {
+                sessionStorage.setItem('department', data.department);
+            }
 
             if (data.role === 'ADMIN') {
                 window.location.href = 'admin-dashboard.html';
