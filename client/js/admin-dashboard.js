@@ -1,3 +1,5 @@
+const API_URL = 'http://localhost:5000/api/admin';
+
 let statsChart; 
 let allAppointments = [];
 let currentFilter = {
@@ -8,7 +10,6 @@ let currentFilter = {
 const getVandaagISO = () => new Date().toISOString().split('T')[0];
 const SYSTEEM_DATUM = getVandaagISO();
 
-// --- 1. INITIALISATIE ---
 document.addEventListener('DOMContentLoaded', () => {
     loadDashboardData();
     setupAppointmentModal();
@@ -125,10 +126,33 @@ async function loadDashboardData() {
 }
 
 function updateCounters(data) {
-    const setStat = (id, val) => { const el = document.getElementById(id); if(el) el.innerText = val; };
+    const setStat = (id, val) => { 
+        const el = document.getElementById(id); 
+        if(el) el.innerText = val; 
+    };
+
+    const welcomeEl = document.getElementById('welcomeText');
+    if (welcomeEl && data.adminName) {
+        welcomeEl.innerText = `Welkom terug, ${data.adminName}`;
+    }
+
+    const deptEl = document.getElementById('deptTitle');
+    if (deptEl) {
+        deptEl.innerText = data.department || 'Afdeling onbekend';
+    }
+
+    const doctorBadge = document.getElementById('doctor-count-badge');
+    if (doctorBadge) {
+        doctorBadge.innerText = `${data.doctors.length} specialisten`;
+    }
+
     setStat('countDoctors', data.doctors.length);
     setStat('countPatients', data.uniquePatients.length);
     setStat('countAppointments', data.appointments.filter(a => a.status === 'GEPLAND').length);
+
+    setStat('total-count', data.appointments.length);
+    setStat('cancelled-count', data.appointments.filter(a => a.status === 'GECANCELLED').length);
+    setStat('completed-count', data.appointments.filter(a => a.status === 'VOLTOOID').length);
 }
 
 function updateDashboardViews() {

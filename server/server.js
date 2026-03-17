@@ -11,7 +11,6 @@ const PORT = 5000;
 app.use(cors({ origin: 'http://127.0.0.1:5500', credentials: true }));
 app.use(express.json());
 
-// Routes koppelen
 app.use('/api/auth', authRoutes);
 app.use('/api/admin', adminRoutes);
 app.use('/api/user', patientRoutes);

@@ -6,12 +6,10 @@ const prisma = require('../db');
 
 const JWT_SECRET = "medix_secret_2026";
 
-// --- 1. REGISTREREN (Specifiek voor patiënten via het portaal) ---
 router.post('/register', async (req, res) => {
     try {
         const { firstName, lastName, idNumber, email, password, role } = req.body;
 
-        // Controleer of gebruiker al bestaat
         const existingUser = await prisma.user.findFirst({
             where: { OR: [{ email }, { idNumber }] }
         });
@@ -29,7 +27,7 @@ router.post('/register', async (req, res) => {
                 idNumber,
                 email,
                 password: hashedPassword,
-                role: role || 'PATIENT' // Standaard patiënt via de frontend
+                role: role || 'PATIENT' 
             }
         });
 
@@ -39,7 +37,6 @@ router.post('/register', async (req, res) => {
             { expiresIn: '2h' }
         );
 
-        // Stuur precies terug wat jouw frontend verwacht in data.token, data.firstName, etc.
         res.status(201).json({ 
             message: "Registratie succesvol!", 
             token, 
@@ -53,37 +50,31 @@ router.post('/register', async (req, res) => {
     }
 });
 
-// --- 2. INLOGGEN (Voor zowel Patiënt als Admin) ---
 router.post('/login', async (req, res) => {
     try {
         const { email, password, role, department } = req.body;
 
         const user = await prisma.user.findUnique({ where: { email } });
 
-        // Check 1: Bestaat de gebruiker en klopt de geselecteerde rol?
         if (!user || user.role !== role) {
             return res.status(401).json({ error: "Onjuiste inloggegevens voor deze rol." });
         }
 
-        // Check 2: Als het een admin is, klopt de geselecteerde afdeling?
         if (role === 'ADMIN' && user.department !== department) {
             return res.status(401).json({ error: "U heeft geen toegang tot deze afdeling." });
         }
 
-        // Check 3: Wachtwoord controle
         const validPassword = await bcrypt.compare(password, user.password);
         if (!validPassword) {
             return res.status(401).json({ error: "Wachtwoord is onjuist." });
         }
 
-        // Token genereren (department toevoegen voor admin autorisatie)
         const token = jwt.sign(
             { id: user.id, role: user.role, department: user.department },
             JWT_SECRET,
             { expiresIn: '24h' }
         );
 
-        // De response die jouw handleLogin() functie gebruikt
         res.json({ 
             token, 
             role: user.role, 
