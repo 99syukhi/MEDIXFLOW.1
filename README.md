@@ -6,19 +6,19 @@ Een modern zorgmanagementsysteem dat is ontworpen om medische werkprocessen, pat
 
 ## 🚀 Functies
 
-* 🏥 **Patiëntenbeheersysteem**
+* **Patiëntenbeheersysteem**
   Beheer eenvoudig patiëntgegevens en medische informatie.
 
-* 📅 **Afspraken plannen**
+* **Afspraken plannen**
   Plan, bekijk en beheer afspraken efficiënt.
 
-* 📊 **Dashboard met analyses**
+* **Dashboard met analyses**
   Krijg inzicht in data via overzichtelijke statistieken.
 
-* 🔐 **Veilige authenticatie en autorisatie**
+* **Veilige authenticatie en autorisatie**
   Bescherming van gebruikersgegevens met moderne security technieken.
 
-* 💻 **Responsieve webinterface**
+* **Responsieve webinterface**
   Werkt op desktop, tablet en mobiel.
 
 ---
@@ -180,7 +180,7 @@ node server.js
 
 ## 🌐 Frontend starten
 
-Klik op index.html en open met live server
+klik op de url in je terminsl en kijk waar ons beroepsproduct overgaat
 
 ---
 
