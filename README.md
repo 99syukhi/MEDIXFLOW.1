@@ -6,19 +6,19 @@ Een modern zorgmanagementsysteem dat is ontworpen om medische werkprocessen, pat
 
 ## 🚀 Functies
 
-* 🏥 **Patiëntenbeheersysteem**
+* **Patiëntenbeheersysteem**
   Beheer eenvoudig patiëntgegevens en medische informatie.
 
-* 📅 **Afspraken plannen**
+* **Afspraken plannen**
   Plan, bekijk en beheer afspraken efficiënt.
 
-* 📊 **Dashboard met analyses**
+* **Dashboard met analyses**
   Krijg inzicht in data via overzichtelijke statistieken.
 
-* 🔐 **Veilige authenticatie en autorisatie**
+* **Veilige authenticatie en autorisatie**
   Bescherming van gebruikersgegevens met moderne security technieken.
 
-* 💻 **Responsieve webinterface**
+* **Responsieve webinterface**
   Werkt op desktop, tablet en mobiel.
 
 ---
@@ -160,6 +160,7 @@ Maak een `.env` bestand aan in de `server/` map:
 ```
 DATABASE_URL="mysql://user:password@localhost:3306/medixflow"
 JWT_SECRET="your_secret_key"
+PORT=5000
 ```
 
 ### 4. Prisma setup
@@ -172,20 +173,14 @@ npx prisma generate
 ### 5. Start de server
 
 ```bash
-npm run dev
+node server.js
 ```
 
 ---
 
 ## 🌐 Frontend starten
 
-Open simpelweg de HTML bestanden in de browser of gebruik een live server:
-
-```bash
-cd client
-```
-
-Gebruik bijvoorbeeld VS Code Live Server.
+klik op de url in je terminsl en kijk waar ons beroepsproduct overgaat
 
 ---
 
