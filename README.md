@@ -116,7 +116,7 @@ Klik op deze URL (of kopieer en plak deze in je browser) om de applicatie te ope
 De applicatie maakt gebruik van environment variables voor configuratie.  
 Deze moeten worden ingesteld in een `.env` bestand in de `server/` map.
 
-### 📄 Vereiste environment variables
+### Vereiste environment variables
 
 | Variabele     | Verplicht | Beschrijving |
 |--------------|-------------|-------------|
@@ -221,7 +221,7 @@ Alle API endpoints zijn gestructureerd in modules:
 
 ---
 
-## Database (MySQL + Prisma)
+### Database (MySQL + Prisma)
 
 De database slaat alle applicatiegegevens op en wordt beheerd via Prisma ORM.
 
