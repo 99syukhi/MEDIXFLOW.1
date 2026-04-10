@@ -120,9 +120,9 @@ Deze moeten worden ingesteld in een `.env` bestand in de `server/` map.
 
 | Variabele     | Verplicht | Beschrijving |
 |--------------|-------------|-------------|
-| DATABASE_URL | ✅ Ja      | Connectiestring voor de MySQL database |
-| JWT_SECRET   | ✅ Ja      | Secret key voor het genereren en verifiëren van JWT tokens |
-| PORT         | ❌ Nee     | Poort waarop de server draait (default: 5000) |
+| DATABASE_URL | Ja      | Connectiestring voor de MySQL database |
+| JWT_SECRET   | Ja      | Secret key voor het genereren en verifiëren van JWT tokens |
+| PORT         | Nee     | Poort waarop de server draait (default: 5000) |
 
 ---
 
@@ -164,7 +164,7 @@ MEDIXFLOW/
 │── README.md
 ```
 
-### 📌 Structuur uitleg
+### Structuur uitleg
 
 - **client/** bevat alle frontend bestanden en UI pagina’s  
 - **server/** bevat de backend logica en API  
@@ -183,7 +183,7 @@ MEDIXFLOW volgt een **client-server architectuur** waarbij de frontend, backend 
 
 ---
 
-### 🔄 Systeemoverzicht
+### Systeemoverzicht
 Frontend (Client)
       ↓ HTTP Requests (fetch / API calls)
 Backend (Express.js API)
@@ -192,27 +192,27 @@ Database (MySQL)
 
 ---
 
-### ⚙️ Componenten
+### Componenten
 
-#### 🖥️ Frontend (Client)
+### Frontend (Client)
 - Gebouwd met HTML, CSS, JavaScript en Vue.js
 - Verantwoordelijk voor de gebruikersinterface
 - Stuurt requests naar de backend via API calls
 
 ---
 
-### 🧠 Backend (Server - Node.js + Express)
+### Backend (Server - Node.js + Express)
 
 De backend verwerkt alle logica en API requests.
 
-#### 🔧 Kernbestanden
+#### Kernbestanden
 - **server.js**
   Startpunt van de applicatie (Express setup + middleware + routes)
 
 - **db.js**
   Database connectie via Prisma ORM
 
-#### 📁 Routes
+#### Routes
 Alle API endpoints zijn gestructureerd in modules:
 
 - `authRoutes.js` → Login & registratie
@@ -221,20 +221,20 @@ Alle API endpoints zijn gestructureerd in modules:
 
 ---
 
-## 🗄️ Database (MySQL + Prisma)
+## Database (MySQL + Prisma)
 
 De database slaat alle applicatiegegevens op en wordt beheerd via Prisma ORM.
 
 ---
 
-### 📦 Database rol
+### Database rol
 - Slaat alle applicatie data op
 - Bevat o.a. users, patiënten en afspraken
 - Zorgt voor persistente opslag van data
 
 ---
 
-### 🔗 Prisma ORM
+### Prisma ORM
 Prisma fungeert als bridge tussen de backend en de database.
 
 Prisma verzorgt:
@@ -246,18 +246,18 @@ Prisma verzorgt:
 
 ---
 
-### ⚙️ Werking
+### Werking
 
 Backend (Node.js / Express) → Prisma ORM → MySQL Database
 
 ---
 
-### 🧠 Belangrijk
+### Belangrijk
 Prisma zorgt ervoor dat database queries veilig en gestructureerd worden uitgevoerd zonder directe SQL queries in de backend.
 
 ---
 
-### 🔁 Data Flow
+### Data Flow
 
 1. Gebruiker voert actie uit in de frontend  
 2. Frontend stuurt request naar Express API  
@@ -268,7 +268,7 @@ Prisma zorgt ervoor dat database queries veilig en gestructureerd worden uitgevo
 
 ---
 
-### 🔐 Security Layer
+### Security Layer
 - JWT tokens worden gebruikt om routes te beveiligen
 - bcrypt zorgt voor veilige wachtwoord hashing
 - cookies worden gebruikt voor sessiebeheer
@@ -372,14 +372,14 @@ De admin API biedt functionaliteiten zoals het beheren van afspraken, het zoeken
 
 ---
 
-## 👤 Patient API
+## Patient API
 
 Deze endpoints stellen patiënten in staat om hun profiel te beheren, afspraken in te plannen en hun persoonlijke medische gegevens te bekijken.
 Alle routes zijn beveiligd met JWT-authenticatie, waardoor alleen ingelogde gebruikers toegang hebben tot hun eigen data.
 
 ---
 
-## 🧠 Database Design
+## Database Design
 
 De database is opgebouwd met MySQL en beheerd via Prisma ORM.  
 Het schema bestaat uit gebruikers, patiënten en afspraken met onderlinge relaties.
